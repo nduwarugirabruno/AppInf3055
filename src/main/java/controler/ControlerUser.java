@@ -40,14 +40,14 @@ public class ControlerUser extends HttpServlet{
 		
     	 if(path.equals("/index.do"))
     	 {
-    		 request.getRequestDispatcher("Home.jsp").forward(request, response);//appel la vue .jsp
+    		 request.getRequestDispatcher("Home.jsp").forward(request, response);//appel la vue.jsp
     	 }
     	 else if (path.equals("/chercher41.do"))
     	 {
     		 String motCle = request.getParameter("motCle");
     		 ModeleUser model = new ModeleUser();//instance de la classe produit
     		 model.setMotCle(motCle);
-    		 List<User> Livs = user.getUsersParMotClé(motCle);//prods est une liste de produits retournée par la méthode produitParMC 
+    		 List<User> Livs = user.getUsersParMotCle(motCle);//prods est une liste de produits retournée par la méthode produitParMC
     		 model.setUser(Livs);
     		 request.setAttribute("model", model);
     		 request.getRequestDispatcher("Home.jsp").forward(request, response);
@@ -84,12 +84,12 @@ public class ControlerUser extends HttpServlet{
  		{
  			 Long id = Long.parseLong(request.getParameter("id"));
  			 String Nom =request.getParameter("Nom");
-   			 String localité = request.getParameter("localité");
+   			 String localite = request.getParameter("localite");
    			 String Profession = request.getParameter("Profession");
  			 User l = new User();
  			 l.setId_Users(id);
  			 l.setNom(Nom);
- 			 l.setLocalite(localité);
+ 			 l.setLocalite(localite);
  			 l.setProfession(Profession);
  			 user.updateUsers(l);
  			 request.setAttribute("user", l);

@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService{
 
 	
 	@Override
-	public List<User> getUsersParMotClé(String mc) {
+	public List<User> getUsersParMotCle(String mc) {
 		List<User> users= new ArrayList<User>();
 		
 		try {

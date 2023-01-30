@@ -15,7 +15,7 @@ public class Test {
 		System.out.println(use.getNom());
         System.out.println("le user ajouté est : " + use.toString());
 
-		List<User> users = user.getUsersParMotClé("Elena");//nous testons une recherche
+		List<User> users = user.getUsersParMotCle("Elena");//nous testons une recherche
 		
 		for (User l : users) {
 			System.out.println(l.getNom());
