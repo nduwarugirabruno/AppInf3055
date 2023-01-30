@@ -59,9 +59,9 @@ public class ControlerUser extends HttpServlet{
   		else if (path.equals("/save.do")  && request.getMethod().equals("POST"))
   		{
   		    String Nom =request.getParameter("Nom");
-  			String localité = request.getParameter("localité");
+  			String localite = request.getParameter("localite");
   			String Profession = request.getParameter("Profession");
-   			User l = user.save(new User(Nom, localité, Profession));
+   			User l = user.save(new User(Nom, localite, Profession));
   			request.setAttribute("user", l);
   			request.getRequestDispatcher("confirmation.jsp").forward(request,response);
   		}
