@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class SingletonConnection {
 
-	private final String dbURL = "jdbc:mysql://localhost:3306/UY1";
+	private final String dbURL = "jdbc:mysql://localhost:3306/TP3055";
 	private final String userName = "root";
 	private final String password = "";
 	private static Connection connection;
