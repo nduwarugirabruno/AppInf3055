@@ -5,6 +5,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Medecin extends User implements Serializable {
     private long idMedecin;
+    private long idUser;
     private String Poste;
     private String Specialite;
 
@@ -12,9 +13,8 @@ public class Medecin extends User implements Serializable {
         super();
     }
 
-    public Medecin(String nom, String localite, String profession, long idMedecin, String poste, String specialite) {
-        super(nom, localite, profession);
-        this.idMedecin = idMedecin;
+    public Medecin(String nom, String localite, String profession, String poste, String specialite) {
+        super(nom, localite, profession, tel, age);
         Poste = poste;
         Specialite = specialite;
     }

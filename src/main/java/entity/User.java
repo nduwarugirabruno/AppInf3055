@@ -9,6 +9,8 @@ public class User implements Serializable{
 	private String Nom;
 	private String localite;
 	private String Profession;
+	private long Tel;
+	private int age;
 	
 	
 	public User() {
@@ -16,11 +18,13 @@ public class User implements Serializable{
 	}
 
 	
-	public User(String nom, String localite, String profession) {
+	public User(String nom, String localite, String profession, long tel, int age) {
 		super();
 		this.Nom = nom;
 		this.localite = localite;
 		this.Profession = profession;
+		Tel = tel;
+		this.age = age;
 	}
 
 
@@ -47,6 +51,18 @@ public class User implements Serializable{
 	}
 	public void setProfession(String profession) {
 		Profession = profession;
+	}
+	public long getTel() {
+		return Tel;
+	}
+	public void setTel(long tel) {
+		Tel = tel;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	@Override

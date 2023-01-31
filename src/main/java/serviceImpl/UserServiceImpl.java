@@ -12,14 +12,14 @@ import entity.SingletonConnection;
 import entity.User;
 
 public class UserServiceImpl implements UserService{
-	Connection conn = SingletonConnection.getConnection();
+
+	private final Connection conn = SingletonConnection.getConnection();
 	/*public UserServiceImpl() {
 		this.conn = SingletonConnection.getConnection();
 		System.out.println("conn in constructor :"+conn);
 	}*/
 	long count = countLigne();
-	
-	
+
 	@Override
 	public User addUser(User user) throws SQLException {
 		 PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(nomUser, localite, Profession) Value(?,?,?)");
@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService{
 		 return user;
 	}
 
-	
 	@Override
 	public List<User> getUsersParMotCle(String mc) {
 		List<User> users= new ArrayList<User>();
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService{
 		return users;//on retourne une liste de produits
 	}
 
-	 public int countLigne(){
+	public int countLigne(){
 		Statement stmt;
 		try {
 			stmt = conn.createStatement();
@@ -118,10 +117,10 @@ public class UserServiceImpl implements UserService{
 			users.setLong(1, id);
 			ResultSet rs = users.executeQuery();
 			if  (rs.next()) {
-				user.setId_Users(rs.getLong("id_Users"));
-				user.setNom(rs.getString("Nom"));
-				user.setLocalite(rs.getString("localité"));
-				user.setProfession(rs.getString("Profession"));
+				user.setId_Users(rs.getLong("idUser"));
+				user.setNom(rs.getString("nomUser"));
+				user.setLocalite(rs.getString("localite"));
+				user.setProfession(rs.getString("profession"));
 				
 			}
 		} catch (SQLException e) {
@@ -129,7 +128,6 @@ public class UserServiceImpl implements UserService{
 		}
 		return user;
 	}
-
 
 	@Override
 	public User updateUsers(User user) {
@@ -140,6 +138,7 @@ public class UserServiceImpl implements UserService{
 			ls.setString(2, user.getLocalite());
 			ls.setLong(3, user.getId_Users());
 			ls.setString(4, user.getProfession());
+			ls.setLong(5, user.getId_Users());
 			ls.executeUpdate();
 			ls.close();
 
@@ -148,7 +147,6 @@ public class UserServiceImpl implements UserService{
 		}
 		return user;
 	}
-
 
 	@Override
 	public User deleteUsers(Long id) {

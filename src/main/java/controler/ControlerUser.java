@@ -61,7 +61,7 @@ public class ControlerUser extends HttpServlet{
   		    String Nom =request.getParameter("Nom");
   			String localite = request.getParameter("localite");
   			String Profession = request.getParameter("Profession");
-   			User l = user.save(new User(Nom, localite, Profession));
+   			User l = user.save(new User(Nom, localite, Profession, tel, age));
   			request.setAttribute("user", l);
   			request.getRequestDispatcher("confirmation.jsp").forward(request,response);
   		}

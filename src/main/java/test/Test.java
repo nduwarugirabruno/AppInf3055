@@ -11,7 +11,7 @@ public class Test {
 	public static void main(String[] args) throws SQLException {
 		UserServiceImpl user = new UserServiceImpl();
 		
-		User use = user.addUser(new User("Dave", "Mvan", "Professeur"));
+		User use = user.addUser(new User("Dave", "Mvan", "Professeur", tel, age));
 		System.out.println(use.getNom());
         System.out.println("le user ajouté est : " + use.toString());
 
