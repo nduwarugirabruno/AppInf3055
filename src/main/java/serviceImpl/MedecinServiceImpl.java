@@ -5,59 +5,46 @@ import entity.Medecin;
 import entity.SingletonConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedecinServiceImpl implements MedecinService {
 
     private final Connection conn = SingletonConnection.getConnection();
 
-    private long countLigneMed() {
-        Statement stmt;
-        try {
-            stmt = conn.createStatement();
-
-            String query = "SELECT count(*) FROM Medecin";
-            //Executing the query
-            ResultSet rs = stmt.executeQuery(query);
-            //Retrieving the result
-            rs.next();
-            int count = rs.getInt(1);
-            System.out.println("Le nombre d'éléments présent dans la table Users est : "+count);
-            return count;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    private long countLigne() {
-        Statement stmt;
-        try {
-            stmt = conn.createStatement();
-
-            String query = "SELECT count(*) FROM Users";
-            //Executing the query
-            ResultSet rs = stmt.executeQuery(query);
-            //Retrieving the result
-            rs.next();
-            int count = rs.getInt(1);
-            System.out.println("Le nombre d'éléments présent dans la table Users est : "+count);
-            return count;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
     @Override
     public List<Medecin> getMedecinParMotCle(String mc) {
-        return null;
+        List<Medecin> medecins = new ArrayList<>();
+
+        try {
+            PreparedStatement pStmt = conn.prepareStatement("Select * from Users inner join Medecin where nomUser LIKE ? and Medecin.idUser = Users.idUser");
+
+            pStmt.setString(1,"%"+mc+"%");
+            ResultSet rs = pStmt.executeQuery();
+            Medecin med;
+            while (rs.next()) {
+                med = new Medecin();
+                med.setId_Users(rs.getLong("idUser"));
+                med.setIdMedecin(rs.getLong("idMedecin"));
+                med.setNom(rs.getString("nomUser"));
+                med.setTel(rs.getLong("Tel"));
+                med.setAge(rs.getInt("age"));
+                med.setLocalite(rs.getString("localite"));
+                med.setProfession(rs.getString("profession"));
+                med.setPoste(rs.getString("poste"));
+                med.setSpecialite(rs.getString("specialite"));
+                medecins.add(med);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return medecins;
     }
 
     @Override
     public Medecin save(Medecin medecin) {
         try {
-            PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, localite, Profession) Value(?,?,?,?)");
+            PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession) Value(?,?,?,?,?,?)");
             PreparedStatement ls1 = conn.prepareStatement("INSERT INTO Medecin(idMedecin, idUser, poste, specialite) Value(?,?,?,?)");
 
             long countUsers = countLigne();
@@ -67,8 +54,10 @@ public class MedecinServiceImpl implements MedecinService {
             medecin.setIdMedecin(countMedecin);
             ls.setLong(1, medecin.getId_Users());
             ls.setString(2, medecin.getNom());
-            ls.setString(3, medecin.getLocalite());
-            ls.setString(4, medecin.getProfession());
+            ls.setLong(3, medecin.getTel());
+            ls.setInt(4, medecin.getAge());
+            ls.setString(5, medecin.getLocalite());
+            ls.setString(6, medecin.getProfession());
             ls.executeUpdate();
             ls.close();
 
@@ -197,5 +186,44 @@ public class MedecinServiceImpl implements MedecinService {
         }
         return null;
     }
+
+    private long countLigneMed() {
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+
+            String query = "SELECT count(*) FROM Medecin";
+            //Executing the query
+            ResultSet rs = stmt.executeQuery(query);
+            //Retrieving the result
+            rs.next();
+            int count = rs.getInt(1);
+            System.out.println("Le nombre d'éléments présent dans la table Users est : "+count);
+            return count;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    private long countLigne() {
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+
+            String query = "SELECT count(*) FROM Users";
+            //Executing the query
+            ResultSet rs = stmt.executeQuery(query);
+            //Retrieving the result
+            rs.next();
+            int count = rs.getInt(1);
+            System.out.println("Le nombre d'éléments présent dans la table Users est : "+count);
+            return count;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }
 
