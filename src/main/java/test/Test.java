@@ -11,9 +11,9 @@ public class Test {
 	public static void main(String[] args) throws SQLException {
 		UserServiceImpl user = new UserServiceImpl();
 		
-		User use = user.addUser(new User("Dave", "Mvan", "Professeur", tel, age));
+		User use = user.addUser(new User("Dave", "Mvan", "Professeur", 239874, 71));
 		System.out.println(use.getNom());
-        System.out.println("le user ajouté est : " + use.toString());
+        System.out.println("le user ajouté est : " + use);
 
 		List<User> users = user.getUsersParMotCle("Elena");//nous testons une recherche
 		

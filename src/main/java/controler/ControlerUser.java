@@ -36,7 +36,7 @@ public class ControlerUser extends HttpServlet{
     	 
     	 String path = request.getServletPath();
 
-		System.out.println("path: "+path);
+		 System.out.println("path: "+path);
 		
     	 if(path.equals("/index.do"))
     	 {
@@ -61,6 +61,9 @@ public class ControlerUser extends HttpServlet{
   		    String Nom =request.getParameter("Nom");
   			String localite = request.getParameter("localite");
   			String Profession = request.getParameter("Profession");
+			long tel = Long.parseLong(request.getParameter("Tel"));
+			int age = Integer.parseInt(request.getParameter("age"));
+
    			User l = user.save(new User(Nom, localite, Profession, tel, age));
   			request.setAttribute("user", l);
   			request.getRequestDispatcher("confirmation.jsp").forward(request,response);
