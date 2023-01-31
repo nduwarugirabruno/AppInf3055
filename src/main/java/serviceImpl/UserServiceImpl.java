@@ -23,23 +23,21 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User addUser(User user) throws SQLException {
 		 PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(Nom,localité,Profession) Value(?,?,?)");
-
-
-		   User users = new User();
-		  users.setId_Users(count);
-		  ls.setString(1, users.getNom());
-		  ls.setString(2, users.getLocalite());
-		  ls.setString(3, users.getProfession());
-		  System.out.println("Le User :"+ users );
-		  ls.executeUpdate();
-		  PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(id_Users) as MAX_ID FROM Users");
-		  ResultSet rs = ls2.executeQuery();
-		  if(rs.next()) {
-			  users.setId_Users(rs.getLong("MAX_ID"));
-		  }
-		  ls.close();
-		  ls2.close();
-		  return user;
+		 User users = new User();
+		 users.setId_Users(count);
+		 ls.setString(1, users.getNom());
+		 ls.setString(2, users.getLocalite());
+		 ls.setString(3, users.getProfession());
+		 System.out.println("Le User :"+ users );
+		 ls.executeUpdate();
+		 PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(id_Users) as MAX_ID FROM Users");
+		 ResultSet rs = ls2.executeQuery();
+		 if(rs.next()) {
+			 users.setId_Users(rs.getLong("MAX_ID"));
+		 }
+		 ls.close();
+		 ls2.close();
+		 return user;
 	}
 
 	

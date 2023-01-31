@@ -53,7 +53,7 @@ public class MedecinServiceImpl implements MedecinService {
     }
 
     @Override
-    public List<Medecin> getUsersParMotCle(String mc) {
+    public List<Medecin> getMedecinParMotCle(String mc) {
         return null;
     }
 
@@ -63,7 +63,8 @@ public class MedecinServiceImpl implements MedecinService {
     }
 
     @Override
-    public Medecin addUser(Medecin medecin) throws SQLException {
+    public Medecin addMedecin(Medecin medecin) throws SQLException {
+
         PreparedStatement ls = conn.prepareStatement("INSERT INTO Medecin (idMedecin, idUser, poste, specialite) Value(?,?,?,?)");
 
         medecin.setId_Users(countUsers);
@@ -85,17 +86,17 @@ public class MedecinServiceImpl implements MedecinService {
     }
 
     @Override
-    public Medecin getUsers(Long id) {
+    public Medecin getMedecin(Long id) {
         return null;
     }
 
     @Override
-    public Medecin updateUsers(Medecin medecin) {
+    public Medecin updateMedecin(Medecin medecin) {
         return null;
     }
 
     @Override
-    public Medecin deleteUsers(Long id) {
+    public Medecin deleteMedecin(Long id) {
         return null;
     }
 }
