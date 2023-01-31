@@ -1,6 +1,9 @@
 package entity;
 
-public class Medecin extends User {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Medecin extends User implements Serializable {
     private long idMedecin;
     private String Poste;
     private String Specialite;
