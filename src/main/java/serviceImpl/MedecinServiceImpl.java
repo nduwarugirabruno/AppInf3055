@@ -136,22 +136,21 @@ public class MedecinServiceImpl implements MedecinService {
     @Override
     public Medecin updateMedecin(Medecin medecin) {
         try {
-            PreparedStatement ls = conn.prepareStatement("UPDATE Users SET idUser = ?, nomUser = ?, localite = ?, Profession = ? WHERE idUser = ?");
+            PreparedStatement ls = conn.prepareStatement("UPDATE Users SET nomUser = ?, localite = ?, Profession = ?, Tel = ?, age = ? WHERE idUser = ?");
 
-            ls.setLong(1, medecin.getId_Users());
-            ls.setString(2, medecin.getNom());
-            ls.setString(3, medecin.getLocalite());
-            ls.setString(4, medecin.getProfession());
-            ls.setLong(5, medecin.getId_Users());
+            ls.setString(1, medecin.getNom());
+            ls.setString(2, medecin.getLocalite());
+            ls.setString(3, medecin.getProfession());
+            ls.setLong(4, medecin.getTel());
+            ls.setInt(5, medecin.getAge());
+            ls.setLong(6, medecin.getId_Users());
             ls.executeUpdate();
             ls.close();
 
-            PreparedStatement ls2 = conn.prepareStatement("UPDATE Medecin SET idUser = ?, idMedecin = ?, poste = ?, specialite = ? WHERE idMedecin = ?");
-            ls2.setLong(1, medecin.getId_Users());
-            ls2.setLong(2, medecin.getIdMedecin());
-            ls2.setString(3, medecin.getPoste());
-            ls2.setString(4, medecin.getSpecialite());
-            ls2.setLong(5, medecin.getIdMedecin());
+            PreparedStatement ls2 = conn.prepareStatement("UPDATE Medecin SET poste = ?, specialite = ? WHERE idUser = ?");
+            ls2.setString(1, medecin.getPoste());
+            ls2.setString(2, medecin.getSpecialite());
+            ls2.setLong(3, medecin.getIdMedecin());
             ls2.executeUpdate();
 
         } catch (SQLException e) {

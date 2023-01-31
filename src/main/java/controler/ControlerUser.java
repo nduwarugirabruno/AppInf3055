@@ -29,9 +29,9 @@ public class ControlerUser extends HttpServlet{
      public void init() throws ServletException {
     	 user = new UserServiceImpl();//implémentation de la servlet
      }
-     
-     @SuppressWarnings("static-access")
-	@Override
+
+	 @SuppressWarnings("static-access")
+	 @Override
      protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	 
     	 String path = request.getServletPath();
