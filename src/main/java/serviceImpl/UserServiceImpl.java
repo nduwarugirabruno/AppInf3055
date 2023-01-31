@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User addUser(User user) throws SQLException {
-		 PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(Nom,localité,Profession) Value(?,?,?)");
+		 PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(nomUser, localite, Profession) Value(?,?,?)");
 		 User users = new User();
 		 users.setId_Users(count);
 		 ls.setString(1, users.getNom());
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
 		 ls.setString(3, users.getProfession());
 		 System.out.println("Le User :"+ users );
 		 ls.executeUpdate();
-		 PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(id_Users) as MAX_ID FROM Users");
+		 PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(idUser) as MAX_ID FROM Users");
 		 ResultSet rs = ls2.executeQuery();
 		 if(rs.next()) {
 			 users.setId_Users(rs.getLong("MAX_ID"));
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
 		List<User> users= new ArrayList<User>();
 		
 		try {
-			PreparedStatement ps = conn.prepareStatement("Select * from Users where Nom LIKE ?");
+			PreparedStatement ps = conn.prepareStatement("Select * from Users where nomUser LIKE ?");
 			ps.setString(1,"%"+mc+"%");
 			ResultSet rs = ps.executeQuery();//on exécute la requete et le résultat est dans un objet de type "Result"
 			while (rs.next()) {
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService{
 	public User save(User user) {
 		System.out.println("connn :"+conn);
 		try {
-			PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(id_Users,Nom,localité,Profession) Value(?,?,?,?)");
+			PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, localite, Profession) Value(?,?,?,?)");
 			long count = countLigne();
 
 			user.setId_Users(count);
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService{
 			ls.setString(4, user.getProfession());
 			System.out.println("Le User :"+ user );
 			ls.executeUpdate();
-			PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(id_Users) as MAX_ID FROM Users");
+			PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(idUser) as MAX_ID FROM Users");
 			ResultSet rs = ls2.executeQuery();
 			if(rs.next()) {
 				user.setId_Users(rs.getLong("MAX_ID"));
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService{
 		Connection conn = SingletonConnection.getConnection();
 		User user = new User();
 		try {
-			PreparedStatement users= conn.prepareStatement("select * from Users where id_Users = ?");
+			PreparedStatement users= conn.prepareStatement("select * from Users where idUser = ?");
 			users.setLong(1, id);
 			ResultSet rs = users.executeQuery();
 			if  (rs.next()) {
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService{
 	public User updateUsers(User user) {
 		Connection conn = SingletonConnection.getConnection();
 		try {
-			PreparedStatement ls = conn.prepareStatement("UPDATE Users SET id_Users=?,Nom=?, localité=?,Profession = ? WHERE id_Users=?");
+			PreparedStatement ls = conn.prepareStatement("UPDATE Users SET idUser = ?, nomUser = ?, localite = ?, Profession = ? WHERE idUser = ?");
 			ls.setString(1, user.getNom());
 			ls.setString(2, user.getLocalite());
 			ls.setLong(3, user.getId_Users());
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService{
 	public User deleteUsers(Long id) {
 		Connection conn = SingletonConnection.getConnection();
 		try {
-			PreparedStatement ls= conn.prepareStatement("DELETE FROM Users WHERE id_Users = ?");
+			PreparedStatement ls= conn.prepareStatement("DELETE FROM Users WHERE idUser = ?");
 			ls.setLong(1, id);
 			int returnInt = ls.executeUpdate();
 			System.out.println("returnInt: "+returnInt);
