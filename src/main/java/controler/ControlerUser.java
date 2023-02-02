@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import Service.UserService;
-import entity.User;
+import entity.metier.User;
 import serviceImpl.UserServiceImpl;
 
 

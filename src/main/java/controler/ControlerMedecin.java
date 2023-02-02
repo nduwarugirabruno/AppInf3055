@@ -1,8 +1,8 @@
 package controler;
 
 import Service.MedecinService;
-import entity.Medecin;
-import entity.User;
+import entity.metier.Medecin;
+import entity.metier.User;
 import jakarta.servlet.annotation.WebServlet;
 import serviceImpl.MedecinServiceImpl;
 

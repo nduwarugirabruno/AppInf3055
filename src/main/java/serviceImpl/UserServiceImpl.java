@@ -9,7 +9,7 @@ import java.util.List;
 
 import Service.UserService;
 import entity.SingletonConnection;
-import entity.User;
+import entity.metier.User;
 
 public class UserServiceImpl implements UserService{
 
@@ -22,18 +22,24 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User addUser(User user) throws SQLException {
-		 PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(nomUser, localite, Profession) Value(?,?,?)");
-		 User users = new User();
-		 users.setId_Users(count);
-		 ls.setString(1, users.getNom());
-		 ls.setString(2, users.getLocalite());
-		 ls.setString(3, users.getProfession());
-		 System.out.println("Le User :"+ users );
+		 PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession, login, `password`) Value(?,?,?,?,?,?,?,?)");
+
+		 user.setId_Users(count);
+		 ls.setLong(1, user.getId_Users());
+		 ls.setString(2, user.getNom());
+		 ls.setLong(3, user.getTel());
+		 ls.setInt(4, user.getAge());
+		 ls.setString(5, user.getLocalite());
+		 ls.setString(6, user.getProfession());
+		 ls.setString(7, user.getLogin());
+		 ls.setString(8, user.getPassword());
+
+		 System.out.println("Le User :"+ user);
 		 ls.executeUpdate();
 		 PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(idUser) as MAX_ID FROM Users");
 		 ResultSet rs = ls2.executeQuery();
 		 if(rs.next()) {
-			 users.setId_Users(rs.getLong("MAX_ID"));
+			 user.setId_Users(rs.getLong("MAX_ID"));
 		 }
 		 ls.close();
 		 ls2.close();

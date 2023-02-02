@@ -3,7 +3,7 @@ package test;
 import java.sql.SQLException;
 import java.util.List;
 
-import entity.User;
+import entity.metier.User;
 import serviceImpl.UserServiceImpl;
 
 public class Test {

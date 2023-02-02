@@ -8,5 +8,6 @@
         <h1> <%= "Hello World! 2" %> </h1>
         <br/>
         <a href="hello-servlet">Hello Servlet</a>
+        <a href="hello-servlet">Hello Servlet</a>
     </body>
 </html>

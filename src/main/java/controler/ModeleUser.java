@@ -2,7 +2,7 @@ package controler;
 
 import java.util.ArrayList;
 import java.util.List;
-import entity.User;
+import entity.metier.User;
 
 public class ModeleUser {
 

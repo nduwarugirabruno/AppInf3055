@@ -2,7 +2,7 @@ package Service;
 
 import java.sql.SQLException;
 import java.util.List;
-import entity.User;
+import entity.metier.User;
 
 public interface UserService {
 

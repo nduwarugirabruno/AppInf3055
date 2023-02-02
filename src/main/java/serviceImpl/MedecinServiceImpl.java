@@ -1,8 +1,9 @@
 package serviceImpl;
 
 import Service.MedecinService;
-import entity.Medecin;
+import entity.metier.Medecin;
 import entity.SingletonConnection;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class MedecinServiceImpl implements MedecinService {
     @Override
     public Medecin save(Medecin medecin) {
         try {
-            PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession) Value(?,?,?,?,?,?)");
+            PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession, login, password) Value(?,?,?,?,?,?,?,?)");
             PreparedStatement ls1 = conn.prepareStatement("INSERT INTO Medecin(idMedecin, idUser, poste, specialite) Value(?,?,?,?)");
 
             long countUsers = countLigne();
@@ -58,6 +59,8 @@ public class MedecinServiceImpl implements MedecinService {
             ls.setInt(4, medecin.getAge());
             ls.setString(5, medecin.getLocalite());
             ls.setString(6, medecin.getProfession());
+            ls.setString(7, medecin.getLogin());
+            ls.setString(8, medecin.getPassword());
             ls.executeUpdate();
             ls.close();
 
@@ -91,6 +94,7 @@ public class MedecinServiceImpl implements MedecinService {
 
         medecin.setId_Users(countUsers);
         medecin.setIdMedecin(countMedecin);
+
         ls.setLong(1, medecin.getIdMedecin());
         ls.setLong(2, medecin.getId_Users());
         ls.setString(3, medecin.getPoste());

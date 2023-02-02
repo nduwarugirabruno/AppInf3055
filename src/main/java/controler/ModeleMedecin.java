@@ -1,7 +1,6 @@
 package controler;
 
-import entity.Medecin;
-import entity.User;
+import entity.metier.Medecin;
 
 import java.util.ArrayList;
 import java.util.List;

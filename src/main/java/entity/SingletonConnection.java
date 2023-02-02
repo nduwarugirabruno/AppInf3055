@@ -23,6 +23,10 @@ public class SingletonConnection {
 		}
 	}
 
+	public static Connection getConnection() {
+		return connection;
+	}
+
 	public void closeConnection() {
 		if (connection!=null)
 			try {
@@ -30,10 +34,6 @@ public class SingletonConnection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-	}
-
-	public static Connection getConnection() {
-		return connection;
 	}
 
 	@Override

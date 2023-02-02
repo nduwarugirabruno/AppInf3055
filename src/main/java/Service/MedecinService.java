@@ -1,6 +1,6 @@
 package Service;
 
-import entity.Medecin;
+import entity.metier.Medecin;
 
 import java.sql.SQLException;
 import java.util.List;
