@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SingletonConnection {
+public class DBConnection {
 
 	private final String dbURL = "jdbc:mysql://localhost:3306/TP3055";
 	private final String userName = "root";
 	private final String password = "";
 	private Connection connection;
 
-	public SingletonConnection() {
+	public DBConnection() {
 		System.out.println("\nConnexion à la base de donnée...");;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");

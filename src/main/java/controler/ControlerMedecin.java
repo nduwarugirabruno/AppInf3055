@@ -2,7 +2,6 @@ package controler;
 
 import Service.MedecinService;
 import entity.metier.Medecin;
-import entity.metier.User;
 import jakarta.servlet.annotation.WebServlet;
 import serviceImpl.MedecinServiceImpl;
 
@@ -31,10 +30,10 @@ public class ControlerMedecin extends HttpServlet {
 
         String path = req.getServletPath();
 
-        if (path.equals("/index.do"))
+        if (path.equals("/index.do")) {
             req.getRequestDispatcher("Home.jsp").forward(req, resp);
-        else if (path.equals("/chercher41.do"))
-        {
+        }
+        else if (path.equals("/chercher41.do")) {
             String motCle = req.getParameter("motCle");
             ModeleMedecin model = new ModeleMedecin();//instance de la classe produit
             model.setMotCle(motCle);
@@ -43,9 +42,9 @@ public class ControlerMedecin extends HttpServlet {
             req.setAttribute("model", model);
             req.getRequestDispatcher("Home.jsp").forward(req, resp);
         }
-        else if(path.equals("/saisie.do"))
+        else if(path.equals("/saisie.do")) {
             req.getRequestDispatcher("saisieHome.jsp").forward(req, resp);
-
+        }
         else if (path.equals("/save.do")  && req.getMethod().equals("POST")) {
 
             String Nom = req.getParameter("Nom");
@@ -55,28 +54,29 @@ public class ControlerMedecin extends HttpServlet {
             int age = Integer.parseInt(req.getParameter("age"));
             String poste = req.getParameter("poste");
             String specialite = req.getParameter("specialite");
+            String login = req.getParameter("login");
+            String password = req.getParameter("password");
 
-            Medecin l = medecin.save(new Medecin(Nom, localite, Profession, poste, specialite, tel, age));
+            Medecin l = medecin.save(new Medecin(Nom, localite, Profession, poste, specialite, tel, age, login, password));
             req.setAttribute("medecin", l);
             req.getRequestDispatcher("confirmation.jsp").forward(req, resp);
         }
-        else if (path.equals("/supprimer.do"))
-        {
+        else if (path.equals("/supprimer.do")) {
             Long id= Long.parseLong(req.getParameter("id"));
             medecin.deleteMedecin(id);
             resp.sendRedirect("Home.jsp");
 
 //  			req.getRequestDispatcher("BibliothequeView.jsp").forward(req,resp);
         }
-        else if (path.equals("/editer.do")  )
-        {
+        else if (path.equals("/editer.do")  ) {
+
             Long id= Long.parseLong(req.getParameter("id"));
             Medecin l = medecin.getMedecin(id);
             req.setAttribute("medecin", l);
             req.getRequestDispatcher("editerLivres.jsp").forward(req, resp);
         }
-        else if (path.equals("/update.do")  )
-        {
+        else if (path.equals("/update.do")  ) {
+
             Long id = Long.parseLong(req.getParameter("id"));
 
             String Nom = req.getParameter("Nom");

@@ -14,6 +14,6 @@ public interface PatientService {
 	Patient getPatient(Long id);
 	Patient updatePatients(Patient patient);
 	Patient deletePatients(Long id);
-	String  Commentaire(String commentaire,Long idPatient);
-	String Description(String description);
+	String  Commentaire(String commentaire, long idPatient);
+	String Description(String description, long idPatient);
 }

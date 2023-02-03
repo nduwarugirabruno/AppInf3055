@@ -1,6 +1,7 @@
 <?php include 'include.php';
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
 
 <head>

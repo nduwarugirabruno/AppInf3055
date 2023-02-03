@@ -1,9 +1,9 @@
 package serviceImpl;
 
 import Service.MedecinService;
-import entity.metier.Medecin;
+import entity.DBConnection;
 import entity.SingletonConnection;
-import org.jetbrains.annotations.NotNull;
+import entity.metier.Medecin;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,10 +11,12 @@ import java.util.List;
 
 public class MedecinServiceImpl implements MedecinService {
 
-    private final Connection conn = SingletonConnection.getConnection();
+    private final SingletonConnection dbConnection = new SingletonConnection();
+    private final Connection conn = dbConnection.getConnection();
 
     @Override
     public List<Medecin> getMedecinParMotCle(String mc) {
+
         List<Medecin> medecins = new ArrayList<>();
 
         try {
@@ -36,6 +38,7 @@ public class MedecinServiceImpl implements MedecinService {
                 med.setSpecialite(rs.getString("specialite"));
                 medecins.add(med);
             }
+            pStmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -44,15 +47,17 @@ public class MedecinServiceImpl implements MedecinService {
 
     @Override
     public Medecin save(Medecin medecin) {
+
         try {
-            PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession, login, password) Value(?,?,?,?,?,?,?,?)");
+            PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession, login, `password`) Value(?,?,?,?,?,?,?,?)");
             PreparedStatement ls1 = conn.prepareStatement("INSERT INTO Medecin(idMedecin, idUser, poste, specialite) Value(?,?,?,?)");
 
             long countUsers = countLigne();
             long countMedecin = countLigneMed();
 
-            medecin.setId_Users(countUsers);
-            medecin.setIdMedecin(countMedecin);
+            medecin.setId_Users(countUsers+1);
+            medecin.setIdMedecin(countMedecin+1);
+
             ls.setLong(1, medecin.getId_Users());
             ls.setString(2, medecin.getNom());
             ls.setLong(3, medecin.getTel());
@@ -87,26 +92,40 @@ public class MedecinServiceImpl implements MedecinService {
     @Override
     public Medecin addMedecin(Medecin medecin) throws SQLException {
 
-        PreparedStatement ls = conn.prepareStatement("INSERT INTO Medecin (idMedecin, idUser, poste, specialite) Value(?,?,?,?)");
-
         long countUsers = countLigne();
         long countMedecin = countLigneMed();
 
-        medecin.setId_Users(countUsers);
-        medecin.setIdMedecin(countMedecin);
+        medecin.setId_Users(countUsers+1);
+        medecin.setIdMedecin(countMedecin+1);
 
-        ls.setLong(1, medecin.getIdMedecin());
-        ls.setLong(2, medecin.getId_Users());
-        ls.setString(3, medecin.getPoste());
-        ls.setString(4, medecin.getSpecialite());
-        System.out.println("Le Medecin :"+ medecin);
+        PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession, login, `password`) VALUE (?,?,?,?,?,?,?,?)");
+
+        ls.setLong(1, medecin.getId_Users());
+        ls.setString(2, medecin.getNom());
+        ls.setLong(3, medecin.getTel());
+        ls.setInt(4, medecin.getAge());
+        ls.setString(5, medecin.getLocalite());
+        ls.setString(6, medecin.getProfession());
+        ls.setString(7, medecin.getLogin());
+        ls.setString(8, medecin.getPassword());
         ls.executeUpdate();
+        ls.close();
+
+
+        PreparedStatement ls1 = conn.prepareStatement("INSERT INTO Medecin (idMedecin, idUser, poste, specialite) Value(?,?,?,?)");
+
+        ls1.setLong(1, medecin.getIdMedecin());
+        ls1.setLong(2, medecin.getId_Users());
+        ls1.setString(3, medecin.getPoste());
+        ls1.setString(4, medecin.getSpecialite());
+        System.out.println("Le Medecin :"+ medecin);
+        ls1.executeUpdate();
         PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(idMedecin) as MAX_ID FROM Medecin");
         ResultSet rs = ls2.executeQuery();
         if(rs.next()) {
             medecin.setId_Users(rs.getLong("MAX_ID"));
         }
-        ls.close();
+        ls1.close();
         ls2.close();
         return medecin;
     }
@@ -131,6 +150,7 @@ public class MedecinServiceImpl implements MedecinService {
                 med.setProfession(rs.getString("profession"));
 
             }
+            pStmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -139,15 +159,18 @@ public class MedecinServiceImpl implements MedecinService {
 
     @Override
     public Medecin updateMedecin(Medecin medecin) {
+
         try {
-            PreparedStatement ls = conn.prepareStatement("UPDATE Users SET nomUser = ?, localite = ?, Profession = ?, Tel = ?, age = ? WHERE idUser = ?");
+            PreparedStatement ls = conn.prepareStatement("UPDATE Users SET nomUser = ?, localite = ?, Profession = ?, Tel = ?, age = ?, login = ?, password = ? WHERE idUser = ?");
 
             ls.setString(1, medecin.getNom());
             ls.setString(2, medecin.getLocalite());
             ls.setString(3, medecin.getProfession());
             ls.setLong(4, medecin.getTel());
             ls.setInt(5, medecin.getAge());
-            ls.setLong(6, medecin.getId_Users());
+            ls.setString(6, medecin.getLogin());
+            ls.setString(7, medecin.getPassword());
+            ls.setLong(8, medecin.getId_Users());
             ls.executeUpdate();
             ls.close();
 
@@ -156,6 +179,7 @@ public class MedecinServiceImpl implements MedecinService {
             ls2.setString(2, medecin.getSpecialite());
             ls2.setLong(3, medecin.getIdMedecin());
             ls2.executeUpdate();
+            ls2.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -165,6 +189,7 @@ public class MedecinServiceImpl implements MedecinService {
 
     @Override
     public Medecin deleteMedecin(Long id) {
+
         try {
             PreparedStatement ls0 = conn.prepareStatement("SELECT * FROM Medecin WHERE idMedecin = ? ");
             ls0.setLong(1, id);
@@ -192,6 +217,7 @@ public class MedecinServiceImpl implements MedecinService {
 
     private long countLigneMed() {
         Statement stmt;
+
         try {
             stmt = conn.createStatement();
 
@@ -211,6 +237,7 @@ public class MedecinServiceImpl implements MedecinService {
 
     private long countLigne() {
         Statement stmt;
+
         try {
             stmt = conn.createStatement();
 
@@ -226,6 +253,7 @@ public class MedecinServiceImpl implements MedecinService {
             e.printStackTrace();
             return 0;
         }
+
     }
 
 }

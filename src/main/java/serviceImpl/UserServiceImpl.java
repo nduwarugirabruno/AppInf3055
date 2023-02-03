@@ -13,18 +13,20 @@ import entity.metier.User;
 
 public class UserServiceImpl implements UserService{
 
-	private final Connection conn = SingletonConnection.getConnection();
+	private final SingletonConnection dbConnection = new SingletonConnection();
+	private final Connection conn = dbConnection.getConnection();
+
 	/*public UserServiceImpl() {
 		this.conn = SingletonConnection.getConnection();
 		System.out.println("conn in constructor :"+conn);
 	}*/
-	long count = countLigne();
 
 	@Override
 	public User addUser(User user) throws SQLException {
 		 PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession, login, `password`) Value(?,?,?,?,?,?,?,?)");
+		long count = countLigne();
 
-		 user.setId_Users(count);
+		 user.setId_Users(count+1);
 		 ls.setLong(1, user.getId_Users());
 		 ls.setString(2, user.getNom());
 		 ls.setLong(3, user.getTel());
@@ -56,12 +58,15 @@ public class UserServiceImpl implements UserService{
 			ResultSet rs = ps.executeQuery();//on exécute la requete et le résultat est dans un objet de type "Result"
 			while (rs.next()) {
 				User user = new User();
-				user.setId_Users(rs.getLong("id_Users"));;
-				user.setNom(rs.getString("Nom"));
-				user.setLocalite(rs.getString("localité"));
-				user.setProfession(rs.getString("Profession"));
+				user.setId_Users(rs.getLong("idUser"));;
+				user.setNom(rs.getString("nomUser"));
+				user.setTel(rs.getLong("Tel"));
+				user.setAge(rs.getInt("age"));
+				user.setLocalite(rs.getString("localite"));
+				user.setProfession(rs.getString("profession"));
 				users.add(user);
 			}
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -91,16 +96,23 @@ public class UserServiceImpl implements UserService{
 	public User save(User user) {
 		System.out.println("connn :"+conn);
 		try {
-			PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, localite, Profession) Value(?,?,?,?)");
+			PreparedStatement ls = conn.prepareStatement("INSERT INTO Users(idUser, nomUser, Tel, age, localite, profession, login, `password`) Value(?,?,?,?,?,?,?,?)");
 			long count = countLigne();
 
-			user.setId_Users(count);
-			ls.setDouble(1, user.getId_Users());
+			user.setId_Users(count+1);
+			ls.setLong(1, user.getId_Users());
 			ls.setString(2, user.getNom());
-			ls.setString(3, user.getLocalite());
-			ls.setString(4, user.getProfession());
-			System.out.println("Le User :"+ user );
+			ls.setLong(3, user.getTel());
+			ls.setInt(4, user.getAge());
+			ls.setString(5, user.getLocalite());
+			ls.setString(6, user.getProfession());
+			ls.setString(7, user.getLogin());
+			ls.setString(8, user.getPassword());
 			ls.executeUpdate();
+			ls.close();
+
+			System.out.println("Le User :"+ user );
+
 			PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(idUser) as MAX_ID FROM Users");
 			ResultSet rs = ls2.executeQuery();
 			if(rs.next()) {
@@ -116,7 +128,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User getUsers(Long id) {
-		Connection conn = SingletonConnection.getConnection();
 		User user = new User();
 		try {
 			PreparedStatement users= conn.prepareStatement("select * from Users where idUser = ?");
@@ -129,6 +140,7 @@ public class UserServiceImpl implements UserService{
 				user.setProfession(rs.getString("profession"));
 				
 			}
+			users.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -137,14 +149,17 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User updateUsers(User user) {
-		Connection conn = SingletonConnection.getConnection();
 		try {
-			PreparedStatement ls = conn.prepareStatement("UPDATE Users SET idUser = ?, nomUser = ?, localite = ?, Profession = ? WHERE idUser = ?");
+			PreparedStatement ls = conn.prepareStatement("UPDATE Users SET nomUser = ?, localite = ?, Profession = ?, Tel = ?, age = ?, login = ?, `password` = ? WHERE idUser = ?");
+
 			ls.setString(1, user.getNom());
 			ls.setString(2, user.getLocalite());
-			ls.setLong(3, user.getId_Users());
-			ls.setString(4, user.getProfession());
-			ls.setLong(5, user.getId_Users());
+			ls.setString(3, user.getProfession());
+			ls.setLong(4, user.getTel());
+			ls.setInt(5, user.getAge());
+			ls.setString(6, user.getLogin());
+			ls.setString(7, user.getPassword());
+			ls.setLong(8, user.getId_Users());
 			ls.executeUpdate();
 			ls.close();
 
@@ -156,7 +171,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User deleteUsers(Long id) {
-		Connection conn = SingletonConnection.getConnection();
 		try {
 			PreparedStatement ls= conn.prepareStatement("DELETE FROM Users WHERE idUser = ?");
 			ls.setLong(1, id);
