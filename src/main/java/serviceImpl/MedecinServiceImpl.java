@@ -74,7 +74,6 @@ public class MedecinServiceImpl implements MedecinService {
             ls1.setString(3, medecin.getPoste());
             ls1.setString(4, medecin.getSpecialite());
             System.out.println("Le Medecin :"+ medecin );
-            ls.executeUpdate();
             ls1.close();
 
             PreparedStatement ls2 = conn.prepareStatement("SELECT MAX(idMedecin) as MAX_ID FROM Medecin");
@@ -227,7 +226,7 @@ public class MedecinServiceImpl implements MedecinService {
             //Retrieving the result
             rs.next();
             int count = rs.getInt(1);
-            System.out.println("Le nombre d'éléments présent dans la table Users est : "+count);
+            System.out.println("Le nombre d'éléments présent dans la table Medecin est : "+count);
             return count;
         } catch (SQLException e) {
             e.printStackTrace();

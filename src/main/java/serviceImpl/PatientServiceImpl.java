@@ -24,8 +24,9 @@ public class PatientServiceImpl implements PatientService{
 		List<Medecin> medecins= new ArrayList<Medecin>();
 
 		try {
-			PreparedStatement ps = conn.prepareStatement("Select * from Medecin inner join Users where nomUser LIKE ?");
+			PreparedStatement ps = conn.prepareStatement("Select * from Medecin inner join Users where nomUser LIKE ? or profession like ?");
 			ps.setString(1,"%"+mc+"%");
+			ps.setString(2,"%"+mc+"%");
 			ResultSet rs = ps.executeQuery();//on exécute la requete et le résultat est dans un objet de type "Result"
 			while (rs.next()) {
                 Medecin medecin = new Medecin();
@@ -168,8 +169,8 @@ public class PatientServiceImpl implements PatientService{
              long countUsers = countLigne();
              long countPatient = countLignePat();
 
-             patient.setId_Users(countUsers);
-             patient.setIdPatient(countPatient);
+             patient.setId_Users(countUsers+1);
+             patient.setIdPatient(countPatient+1);
              ps.setLong(1, patient.getId_Users());
              ps.setString(2, patient.getNom());
              ps.setLong(3, patient.getTel());
@@ -185,22 +186,13 @@ public class PatientServiceImpl implements PatientService{
              ps1.setLong(2, patient.getId_Users());
              ps1.setString(3, patient.getDescription());
              ps1.setString(4, patient.getCommentaire());
-             ps.executeUpdate();
              ps1.close();
 
-             System.out.println("Le Patient :"+ patient);
-
-             PreparedStatement ps2 = conn.prepareStatement("SELECT MAX(idPatient) as MAX_ID FROM Patients");
-             ResultSet rs = ps2.executeQuery();
-             if(rs.next()) {
-                 patient.setIdPatient(rs.getLong("MAX_ID"));
-             }
-             ps.close();
-             ps2.close();
 		  }catch (SQLException e) {
 			  e.printStackTrace();
 		  }
-		  return patient;	}
+		  return patient;
+	}
 
 	@Override
 	public String Commentaire(String commentaire, long idPatient) {
@@ -284,7 +276,7 @@ public class PatientServiceImpl implements PatientService{
 			//Retrieving the result
 			rs.next();
 			int count = rs.getInt(1);
-			System.out.println("Le nombre d'éléments présent dans la table Users est : "+count);
+			System.out.println("Le nombre d'éléments présent dans la table Patient est : "+count);
 			return count;
 		} catch (SQLException e) {
 			e.printStackTrace();

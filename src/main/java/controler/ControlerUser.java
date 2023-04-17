@@ -16,7 +16,7 @@ import serviceImpl.UserServiceImpl;
 
 
 
-@WebServlet (name="cs",urlPatterns= {"/controleur","*.do"})
+@WebServlet (name="cs",urlPatterns= {"/controleur0","*.do"})
 public class ControlerUser extends HttpServlet{
 
     /**

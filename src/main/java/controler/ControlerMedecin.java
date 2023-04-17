@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "cs", urlPatterns = {"/controleur", "*.do"})
+@WebServlet(name = "cs", urlPatterns = {"/controleur2", "*.do"})
 public class ControlerMedecin extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

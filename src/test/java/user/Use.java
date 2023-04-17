@@ -1,3 +1,5 @@
+package user;
+
 import entity.metier.User;
 import org.junit.jupiter.api.Test;
 import serviceImpl.UserServiceImpl;
